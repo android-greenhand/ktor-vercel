@@ -1,15 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "build/libs/*-all.jar",
-      "use": "@vercel/java"
-    }
+    { "src": "api/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "build/libs/*-all.jar"
-    }
+    { "src": "/(.*)", "dest": "api/index.js" }
   ]
 } 
