@@ -61,6 +61,7 @@ fun Application.module() {
         get("/") {
             call.respond(mapOf(
                 "status" to "ok",
+                "version" to "1.0.1",
                 "message" to "GitHub API Proxy is running",
                 "endpoints" to listOf(
                     "/health",
