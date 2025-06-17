@@ -57,6 +57,19 @@ fun Application.module() {
 
     // 配置路由
     routing {
+        // 根路由
+        get("/") {
+            call.respond(mapOf(
+                "status" to "ok",
+                "message" to "GitHub API Proxy is running",
+                "endpoints" to listOf(
+                    "/health",
+                    "/api/contents/{path}",
+                    "/api/commits/{path}"
+                )
+            ))
+        }
+
         // 健康检查端点
         get("/health") {
             call.respond(mapOf("status" to "ok"))
@@ -66,6 +79,15 @@ fun Application.module() {
         get("/api/contents/{...}") {
             val path = call.parameters["..."] ?: ""
             val githubToken = System.getenv("GITHUB_TOKEN")
+            
+            if (githubToken.isNullOrEmpty()) {
+                call.respondText(
+                    text = "Error: GitHub token not configured",
+                    status = HttpStatusCode.InternalServerError
+                )
+                return@get
+            }
+
             val repoOwner = "android-greenhand"
             val repoName = "Logseq"
 
@@ -89,6 +111,15 @@ fun Application.module() {
         get("/api/commits/{...}") {
             val path = call.parameters["..."] ?: ""
             val githubToken = System.getenv("GITHUB_TOKEN")
+            
+            if (githubToken.isNullOrEmpty()) {
+                call.respondText(
+                    text = "Error: GitHub token not configured",
+                    status = HttpStatusCode.InternalServerError
+                )
+                return@get
+            }
+
             val repoOwner = "android-greenhand"
             val repoName = "Logseq"
 
