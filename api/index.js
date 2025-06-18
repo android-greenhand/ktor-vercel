@@ -3,6 +3,19 @@ const fetch = require('node-fetch');
 
 const app = express();
 
+// 添加 CORS 中间件
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 // 默认仓库配置
 const DEFAULT_REPO_OWNER = 'android-greenhand';
 const DEFAULT_REPO_NAME = 'Logseq';
